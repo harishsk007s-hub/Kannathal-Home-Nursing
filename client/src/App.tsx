@@ -29,9 +29,13 @@ export const App: React.FC = () => {
               <Route path="/feedback" element={<FeedbackPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/disclaimer" element={<MedicalDisclaimer />} />
+              <Route path="/medical-disclaimer" element={<MedicalDisclaimer />} />
+              <Route path="/admin" element={<AdminLogin />} />
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="*" element={<Home />} />
             </Routes>
           </main>
           <Footer />

@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Phone, MessageCircle, Menu, X, ShieldCheck, MapPin, User } from 'lucide-react';
+import { Phone, MessageCircle, Menu, X, ShieldCheck, MapPin } from 'lucide-react';
 import { BUSINESS_INFO, getWhatsappUrl } from '../utils/constants';
-import { useAuth } from '../context/AuthContext';
 
 import { BrandLogo } from './BrandLogo';
 
 export const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
-  const { isAuthenticated } = useAuth();
 
   const navLinks = [
     { name: 'Home', nameTamil: 'முகப்பு', path: '/' },
@@ -76,22 +74,6 @@ export const Header: React.FC = () => {
               {link.name}
             </Link>
           ))}
-          {isAuthenticated ? (
-            <Link
-              to="/admin/dashboard"
-              className="ml-2 px-3 py-1.5 rounded-md text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-100 transition-colors flex items-center gap-1"
-            >
-              <User className="w-3.5 h-3.5" />
-              Admin Portal
-            </Link>
-          ) : (
-            <Link
-              to="/admin/login"
-              className="text-slate-400 hover:text-slate-600 text-xs font-medium px-2 py-1"
-            >
-              Admin
-            </Link>
-          )}
         </nav>
 
         {/* Desktop Action Buttons */}
@@ -154,23 +136,6 @@ export const Header: React.FC = () => {
                 <span className="text-xs opacity-75 font-normal">{link.nameTamil}</span>
               </Link>
             ))}
-            {isAuthenticated ? (
-              <Link
-                to="/admin/dashboard"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="px-4 py-2.5 rounded-lg text-sm font-bold bg-amber-100 text-amber-900"
-              >
-                Admin Dashboard
-              </Link>
-            ) : (
-              <Link
-                to="/admin/login"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="px-4 py-2 text-xs text-slate-500 hover:text-slate-800"
-              >
-                Admin Login
-              </Link>
-            )}
           </div>
 
           <div className="pt-2 border-t border-slate-100 flex flex-col gap-2">

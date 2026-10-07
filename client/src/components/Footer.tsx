@@ -136,8 +136,6 @@ export const Footer: React.FC = () => {
             <Link to="/disclaimer" className="hover:text-slate-300">Medical Disclaimer</Link>
             <span>•</span>
             <Link to="/privacy" className="hover:text-slate-300">Privacy Policy</Link>
-            <span>•</span>
-            <Link to="/admin/login" className="hover:text-slate-300">Admin Login</Link>
           </div>
         </div>
       </div>

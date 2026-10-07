@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lock, Mail, Key, ShieldCheck, AlertCircle } from 'lucide-react';
+import { Lock, Mail, Key, AlertCircle } from 'lucide-react';
 import { apiService } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { BUSINESS_INFO } from '../utils/constants';
@@ -52,6 +52,11 @@ export const AdminLogin: React.FC = () => {
 
         {/* Login Form */}
         <div className="p-8 space-y-6">
+          <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 font-medium leading-relaxed">
+            <span className="font-bold text-amber-800 uppercase block mb-0.5">ℹ Localhost Frontend Demo Mode</span>
+            This login is a client-side demo state stored in browser LocalStorage.
+          </div>
+
           {errorMsg && (
             <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl text-xs flex items-center gap-2">
               <AlertCircle className="w-4 h-4 shrink-0" />
@@ -106,10 +111,9 @@ export const AdminLogin: React.FC = () => {
 
           {/* Quick Credential Hint Box */}
           <div className="p-3.5 bg-emerald-50/80 border border-emerald-200 rounded-xl text-xs text-emerald-900 space-y-1">
-            <div className="flex items-center gap-1.5 font-bold text-emerald-800">
-              <ShieldCheck className="w-4 h-4 text-emerald-600" />
-              Initial Admin Credentials:
-            </div>
+            <p className="font-bold text-emerald-800">
+              Demo Credentials:
+            </p>
             <p className="text-[11px] font-mono text-emerald-950">
               Email: <strong>admin@srikannathal.com</strong>
             </p>

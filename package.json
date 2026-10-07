@@ -2,13 +2,12 @@
   "name": "sri-kannathal-homecare",
   "version": "1.0.0",
   "private": true,
-  "description": "Full Stack MERN application for Sri Kannathal Home Care & Nursing Service",
+  "description": "Frontend React + Vite + TypeScript + Tailwind CSS application for Sri Kannathal Home Care & Nursing Service",
   "scripts": {
-    "install:all": "npm install && cd client && npm install && cd ../server && npm install",
-    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
-    "build": "npm run build --prefix server && npm run build --prefix client",
-    "start": "npm run start --prefix server",
-    "seed": "npm run seed --prefix server"
+    "dev": "npm run dev --prefix client",
+    "build": "npm run build --prefix client",
+    "preview": "npm run preview --prefix client",
+    "postinstall": "cd client && npm install"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"

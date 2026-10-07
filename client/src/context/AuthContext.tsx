@@ -51,6 +51,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = () => {
+    apiService.logoutAdmin();
     localStorage.removeItem('sri_kannathal_admin_token');
     setAuthState({
       token: null,

@@ -179,14 +179,14 @@ export const AdminDashboard: React.FC = () => {
     }
   };
 
-  // Handle Password Change
+  // Handle Password Change (Frontend Demo Mode)
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setPassErr('');
     setPassMsg('');
     try {
-      const resMsg = await apiService.changePassword({ currentPassword, newPassword });
-      setPassMsg(resMsg);
+      const res = await apiService.changeAdminPassword({ currentPassword, newPassword });
+      setPassMsg(res.message);
       setCurrentPassword('');
       setNewPassword('');
     } catch (err: any) {
