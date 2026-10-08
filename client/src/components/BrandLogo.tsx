@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { BUSINESS_INFO } from '../utils/constants';
 
 export interface BrandLogoProps {
@@ -19,6 +19,13 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
   size = 'md',
   variant = 'light',
 }) => {
+  const location = useLocation();
+
+  const handleLogoClick = () => {
+    if (location.pathname === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
   /**
    * Responsive heights based on user specs:
    * Desktop: height between 32px and 44px
@@ -64,6 +71,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
     return (
       <Link
         to="/"
+        onClick={handleLogoClick}
         className="group inline-block focus:outline-none focus:ring-2 focus:ring-emerald-500 rounded-xl"
         title={`${BUSINESS_INFO.nameTamil} - ${BUSINESS_INFO.nameEnglish}`}
       >

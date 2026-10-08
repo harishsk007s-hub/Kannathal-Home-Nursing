@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Phone, MessageCircle, Menu, X, ShieldCheck, MapPin } from 'lucide-react';
-import { BUSINESS_INFO, getWhatsappUrl } from '../utils/constants';
+import { BUSINESS_INFO } from '../utils/constants';
 
 import { BrandLogo } from './BrandLogo';
 
@@ -19,8 +19,15 @@ export const Header: React.FC = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
+  const handleNavClick = (path: string) => {
+    if (path === '/' && location.pathname === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    setIsMobileMenuOpen(false);
+  };
+
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-emerald-100">
+    <header className="relative z-50 bg-white/95 shadow-sm border-b border-emerald-100">
       {/* Top Bar for Phone Numbers & Location */}
       <div className="bg-slate-900 text-white text-xs py-2 px-4">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
@@ -65,6 +72,7 @@ export const Header: React.FC = () => {
             <Link
               key={link.path}
               to={link.path}
+              onClick={() => handleNavClick(link.path)}
               className={`px-3 py-2 rounded-lg text-sm font-semibold transition-all ${
                 isActive(link.path)
                   ? 'bg-emerald-50 text-emerald-700 font-bold border-b-2 border-emerald-600'
@@ -79,13 +87,11 @@ export const Header: React.FC = () => {
         {/* Desktop Action Buttons */}
         <div className="hidden lg:flex items-center gap-3">
           <a
-            href={getWhatsappUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/#book-appointment"
             className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-full text-xs font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-1.5"
           >
             <MessageCircle className="w-4 h-4" />
-            WhatsApp Us
+            Book Appointment
           </a>
           <a
             href={BUSINESS_INFO.phone1Link}
@@ -99,11 +105,9 @@ export const Header: React.FC = () => {
         {/* Mobile Menu Toggle Button */}
         <div className="flex items-center gap-2 md:hidden">
           <a
-            href={getWhatsappUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/#book-appointment"
             className="p-2 text-emerald-600 hover:bg-emerald-50 rounded-full"
-            aria-label="WhatsApp"
+            aria-label="Book Appointment"
           >
             <MessageCircle className="w-6 h-6" />
           </a>
@@ -125,7 +129,7 @@ export const Header: React.FC = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => handleNavClick(link.path)}
                 className={`px-4 py-2.5 rounded-lg text-sm font-semibold flex justify-between items-center ${
                   isActive(link.path)
                     ? 'bg-emerald-600 text-white font-bold'
@@ -147,13 +151,12 @@ export const Header: React.FC = () => {
               Call {BUSINESS_INFO.phone1}
             </a>
             <a
-              href={getWhatsappUrl()}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/#book-appointment"
+              onClick={() => setIsMobileMenuOpen(false)}
               className="w-full bg-emerald-600 text-white text-center py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 shadow"
             >
               <MessageCircle className="w-4 h-4" />
-              Chat on WhatsApp
+              Book Appointment
             </a>
           </div>
         </div>

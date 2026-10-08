@@ -3,8 +3,13 @@ import React from 'react';
 import { BUSINESS_INFO } from '../utils/constants';
 
 import { BrandLogo } from '../components/BrandLogo';
+import { useSEO } from '../utils/useSEO';
 
 export const PrivacyPolicy: React.FC = () => {
+  useSEO({
+    title: 'Privacy Policy | Sri Kannathal Home Care & Nursing Service',
+    description: 'Privacy Policy for Sri Kannathal Home Care & Nursing Service regarding patient health information and contact details.'
+  });
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       <div className="border-b border-slate-200 pb-6 space-y-3">

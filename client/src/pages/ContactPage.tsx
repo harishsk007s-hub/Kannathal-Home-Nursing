@@ -4,6 +4,7 @@ import { BUSINESS_INFO, getWhatsappUrl } from '../utils/constants';
 import { ClinicalDisclaimerNotice } from '../components/ClinicalDisclaimerNotice';
 import { apiService } from '../services/api';
 import { BrandLogo } from '../components/BrandLogo';
+import { useSEO } from '../utils/useSEO';
 
 export const ContactPage: React.FC = () => {
   const [name, setName] = useState('');
@@ -15,6 +16,11 @@ export const ContactPage: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+
+  useSEO({
+    title: 'Contact Us | Sri Kannathal Home Care & Nursing Service',
+    description: 'Contact Sri Kannathal Home Care for professional home nursing, elderly care, and patient caregiver services in Alanganallur and Madurai. Available 24/7.'
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -132,7 +138,7 @@ export const ContactPage: React.FC = () => {
                 className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-4 rounded-xl text-xs flex items-center justify-center gap-2 shadow"
               >
                 <ExternalLink className="w-4 h-4" />
-                Google Maps Location Directions
+                Get Directions
               </a>
 
               <a

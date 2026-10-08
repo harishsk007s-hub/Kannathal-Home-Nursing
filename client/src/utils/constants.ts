@@ -13,7 +13,7 @@ export const BUSINESS_INFO = {
   whatsappRaw: '918610656514',
   address: 'Near Ayyappan Temple, Thanichiyam Main Road, Alanganallur, Madurai, Tamil Nadu – 625501',
   serviceAreas: 'Alanganallur and nearby areas of Madurai, subject to availability',
-  googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Ayyappan%20Temple%2C%20Thanichiyam%20Main%20Road%2C%20Alanganallur%2C%20Madurai%2C%20Tamil%20Nadu%20625501',
+  googleMapsUrl: "https://www.google.com/maps/place/10%C2%B002'43.9%22N+78%C2%B005'02.2%22E/@10.0455314,78.0813763,17z/data=!3m1!4b1!4m4!3m3!8m2!3d10.0455314!4d78.0839512?hl=en&entry=ttu&g_ep=EgoyMDI2MTAwNS4wIKXMDSoASAFQAw%",
   workingHours: '24 Hours / 7 Days Caregiver & Nursing Support',
 };
 

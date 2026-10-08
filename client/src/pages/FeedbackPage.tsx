@@ -3,11 +3,17 @@ import { Star, Send, CheckCircle2, AlertCircle } from 'lucide-react';
 import { apiService } from '../services/api';
 import type { Feedback } from '../types';
 import { BrandLogo } from '../components/BrandLogo';
+import { useSEO } from '../utils/useSEO';
 
 
 export const FeedbackPage: React.FC = () => {
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const [loading, setLoading] = useState(true);
+
+  useSEO({
+    title: 'Patient Feedback & Reviews | Sri Kannathal Home Care',
+    description: 'Read verified patient reviews and family testimonials about Sri Kannathal Home Care & Nursing Service in Alanganallur and Madurai.'
+  });
 
   // Form State
   const [patientName, setPatientName] = useState('');

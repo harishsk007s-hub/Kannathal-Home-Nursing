@@ -7,6 +7,7 @@ import { getWhatsappUrl } from '../utils/constants';
 import { ClinicalDisclaimerNotice } from '../components/ClinicalDisclaimerNotice';
 import { EnquiryModal } from '../components/EnquiryModal';
 import { BrandLogo } from '../components/BrandLogo';
+import { useSEO } from '../utils/useSEO';
 
 export const ServicesPage: React.FC = () => {
   const [services, setServices] = useState<ServiceItem[]>([]);
@@ -15,6 +16,11 @@ export const ServicesPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalService, setModalService] = useState('Home Nursing Care');
+
+  useSEO({
+    title: 'Home Care & Nursing Services | Sri Kannathal Home Care Madurai',
+    description: 'Explore our complete range of skilled nursing procedures, caregiver assistance, elderly care, and baby care in Alanganallur and Madurai.'
+  });
 
   useEffect(() => {
     const fetchServices = async () => {

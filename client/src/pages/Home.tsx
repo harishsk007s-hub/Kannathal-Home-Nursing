@@ -8,48 +8,45 @@ import {
   Users,
   Clock,
   CheckCircle2,
-  Search,
   Star,
   ArrowRight,
   ChevronRight,
   MapPin,
   ExternalLink,
   Sparkles,
-  Stethoscope,
   Activity,
 } from 'lucide-react';
-import { BUSINESS_INFO, getWhatsappUrl } from '../utils/constants';
+import { BUSINESS_INFO } from '../utils/constants';
 import { ClinicalDisclaimerNotice } from '../components/ClinicalDisclaimerNotice';
-import { EnquiryModal } from '../components/EnquiryModal';
 import { apiService } from '../services/api';
-import type { ServiceItem, Feedback } from '../types';
+import type { Feedback } from '../types';
+import { useSEO } from '../utils/useSEO';
 
 
 import { BrandLogo } from '../components/BrandLogo';
 
 export const Home: React.FC = () => {
-  const [services, setServices] = useState<ServiceItem[]>([]);
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalService, setModalService] = useState('Home Nursing Care');
 
-  // Quick Inline Form State
+  useSEO({
+    title: 'Sri Kannathal Home Care & Nursing Service | Home Nursing & Patient Care Madurai',
+    description: 'Sri Kannathal Home Care & Nursing Service provides professional home nursing, patient care, elderly care, and healthcare services at home in Alanganallur and Madurai.'
+  });
+
+  // Appointment Booking Form State
   const [quickName, setQuickName] = useState('');
   const [quickPhone, setQuickPhone] = useState('');
+  const [quickDate, setQuickDate] = useState('');
+  const [quickTime, setQuickTime] = useState('');
   const [quickService, setQuickService] = useState('Home Nursing Services');
+  const [quickMessage, setQuickMessage] = useState('');
   const [quickSubmitting, setQuickSubmitting] = useState(false);
   const [quickSuccess, setQuickSuccess] = useState('');
 
   useEffect(() => {
     const loadHomeData = async () => {
       try {
-        const [servicesData, feedbackData] = await Promise.all([
-          apiService.fetchServices(),
-          apiService.fetchApprovedFeedbacks(),
-        ]);
-        setServices(servicesData);
+        const feedbackData = await apiService.fetchApprovedFeedbacks();
         setFeedbacks(feedbackData);
       } catch (err) {
         console.error('Error loading home page data:', err);
@@ -58,62 +55,45 @@ export const Home: React.FC = () => {
     loadHomeData();
   }, []);
 
-  const openBookingModal = (serviceName: string) => {
-    setModalService(serviceName);
-    setIsModalOpen(true);
-  };
 
   const handleQuickSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!quickName || !quickPhone || !quickDate || !quickTime || !quickService) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
     setQuickSubmitting(true);
     setQuickSuccess('');
-    try {
-      await apiService.submitEnquiry({
-        name: quickName,
-        phone: quickPhone,
-        serviceRequested: quickService,
-        message: 'Quick Callback Request from Home Page Hero Banner',
-      });
-      setQuickSuccess('Thank you! Our nursing team will call you back shortly.');
+
+    const textMessage = `New Appointment Booking\n\nName: ${quickName}\nPhone: ${quickPhone}\nDate: ${quickDate}\nTime: ${quickTime}\nReason: ${quickService}\nMessage: ${quickMessage || 'None'}`;
+    const encodedMessage = encodeURIComponent(textMessage);
+    const whatsappUrl = `https://wa.me/919360086006?text=${encodedMessage}`;
+
+    setTimeout(() => {
+      setQuickSuccess('Your booking details are ready in WhatsApp.');
+      setQuickSubmitting(false);
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+      
       setQuickName('');
       setQuickPhone('');
-    } catch (err: any) {
-      alert(err.message || 'Failed to send request. Please call us directly.');
-    } finally {
-      setQuickSubmitting(false);
-    }
+      setQuickDate('');
+      setQuickTime('');
+      setQuickMessage('');
+    }, 600);
   };
 
-  const categoryFilterList = [
-    'All',
-    'Home Nursing Services',
-    'Elderly Care',
-    'Baby and Newborn Care',
-    'Maternity and Delivery Care',
-    'Bedridden Patient Care',
-    'Attendant and Caregiver Services',
-    'Palliative and Compassionate Care',
-    'Hospital-to-Home Support',
-  ];
 
-  const filteredServices = services.filter((service) => {
-    const matchesCategory = selectedCategory === 'All' || service.categoryName === selectedCategory;
-    const matchesSearch =
-      service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (service.nameTamil && service.nameTamil.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      service.description.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
 
   return (
     <div className="space-y-12 sm:space-y-16 pb-12">
       {/* ================= HERO SECTION ================= */}
       <section className="relative bg-gradient-to-br from-slate-900 via-emerald-950 to-teal-900 text-white overflow-hidden py-12 lg:py-20">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:16px_16px]"></div>
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            
+
             {/* Left Hero Content */}
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
               <div className="flex flex-col lg:flex-row items-center gap-4">
@@ -140,21 +120,19 @@ export const Home: React.FC = () => {
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 pt-2">
                 <a
-                  href={BUSINESS_INFO.phone1Link}
+                  href="#book-appointment"
                   className="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3.5 rounded-xl font-bold text-sm shadow-lg hover:shadow-emerald-500/30 transition-all flex items-center justify-center gap-2"
                 >
-                  <Phone className="w-5 h-5" />
-                  Call Now: {BUSINESS_INFO.phone1}
+                  <Clock className="w-5 h-5" />
+                  Book Appointment
                 </a>
 
                 <a
-                  href={getWhatsappUrl()}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={BUSINESS_INFO.phone1Link}
                   className="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white px-6 py-3.5 rounded-xl font-bold text-sm shadow-lg hover:shadow-teal-600/30 transition-all flex items-center justify-center gap-2"
                 >
-                  <MessageCircle className="w-5 h-5 text-emerald-300" />
-                  Chat on WhatsApp
+                  <Phone className="w-5 h-5 text-emerald-300" />
+                  Call Now: {BUSINESS_INFO.phone1}
                 </a>
               </div>
 
@@ -176,14 +154,14 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Right Hero Quick Request Card */}
-            <div className="lg:col-span-5">
+            <div className="lg:col-span-5" id="book-appointment">
               <div className="glass-panel p-6 rounded-2xl shadow-2xl border border-white/20 text-slate-900">
                 <h3 className="text-lg font-bold text-slate-900 mb-1 flex items-center gap-2 font-heading">
-                  <img src="/logo.png" alt="Logo" className="w-6 h-6 object-contain" />
-                  Request Immediate Callback
+                  <img src="/logo.png" alt="Sri Kannathal Home Care & Nursing Service" className="w-6 h-6 object-contain" />
+                  Book Appointment
                 </h3>
                 <p className="text-xs text-slate-600 mb-4">
-                  Fill in your phone number to get an instant consultation call from our care team.
+                  Fill in the details below to book an appointment with our care team via WhatsApp.
                 </p>
 
                 {quickSuccess ? (
@@ -227,9 +205,36 @@ export const Home: React.FC = () => {
                       />
                     </div>
 
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-700 mb-1">
+                          Preferred Date <span className="text-rose-500">*</span>
+                        </label>
+                        <input
+                          type="date"
+                          required
+                          value={quickDate}
+                          onChange={(e) => setQuickDate(e.target.value)}
+                          className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-700 mb-1">
+                          Preferred Time <span className="text-rose-500">*</span>
+                        </label>
+                        <input
+                          type="time"
+                          required
+                          value={quickTime}
+                          onChange={(e) => setQuickTime(e.target.value)}
+                          className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                        />
+                      </div>
+                    </div>
+
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Primary Service Needed
+                        Service / Reason <span className="text-rose-500">*</span>
                       </label>
                       <select
                         value={quickService}
@@ -242,7 +247,21 @@ export const Home: React.FC = () => {
                         <option>Bedridden Patient Care</option>
                         <option>Wound Dressing & Sutures</option>
                         <option>Palliative & Cancer Care</option>
+                        <option>General Checkup / Consultation</option>
                       </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">
+                        Optional Message
+                      </label>
+                      <textarea
+                        placeholder="Any additional details..."
+                        value={quickMessage}
+                        onChange={(e) => setQuickMessage(e.target.value)}
+                        rows={2}
+                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none resize-none"
+                      />
                     </div>
 
                     <button
@@ -250,7 +269,7 @@ export const Home: React.FC = () => {
                       disabled={quickSubmitting}
                       className="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3 rounded-xl text-xs shadow-md transition-all flex items-center justify-center gap-1.5 disabled:opacity-50 mt-2"
                     >
-                      <span>{quickSubmitting ? 'Sending Request...' : 'Get Fast Callback'}</span>
+                      <span>{quickSubmitting ? 'Processing...' : 'Book Appointment via WhatsApp'}</span>
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   </form>
@@ -276,7 +295,7 @@ export const Home: React.FC = () => {
         <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-slate-200/80 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-7 space-y-4">
             <div className="inline-flex items-center gap-2 text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-              <img src="/logo.png" alt="Logo" className="w-5 h-5 object-contain" /> About Sri Kannathal Home Care
+              <img src="/logo.png" alt="Sri Kannathal Home Care" className="w-5 h-5 object-contain" /> About Sri Kannathal Home Care
             </div>
 
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-heading">
@@ -367,155 +386,6 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* ================= SERVICES SECTION ================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        <div className="text-center max-w-3xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2 text-emerald-700 bg-emerald-50 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-            <Stethoscope className="w-4 h-4" /> Comprehensive Care Options
-          </div>
-
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 font-heading">
-            Our Nursing & Home Care Services
-          </h2>
-
-          <p className="text-slate-600 text-sm">
-            Select a service category or search below to explore options tailored for your loved ones.
-          </p>
-        </div>
-
-        {/* Search & Category Filter Pills */}
-        <div className="space-y-4">
-          <div className="max-w-xl mx-auto relative">
-            <Search className="w-5 h-5 text-slate-400 absolute left-3.5 top-3" />
-            <input
-              type="text"
-              placeholder="Search services (e.g., wound dressing, elderly, catheter, newborn)..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-2xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none shadow-sm"
-            />
-          </div>
-
-          {/* Category Filter Pills Bar */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none justify-start md:justify-center">
-            {categoryFilterList.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`whitespace-nowrap px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 ${
-                  selectedCategory === cat
-                    ? 'bg-emerald-700 text-white shadow-md'
-                    : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredServices.length > 0 ? (
-            filteredServices.map((service) => (
-              <div
-                key={service._id}
-                className="glass-card bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm flex flex-col justify-between hover:border-emerald-300 relative group"
-              >
-                <div className="space-y-3">
-                  <div className="flex items-start justify-between gap-2">
-                    <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md">
-                      {service.categoryName}
-                    </span>
-
-                    {service.isClinical && (
-                      <span className="text-[10px] font-bold text-rose-700 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-full">
-                        Clinical Procedure
-                      </span>
-                    )}
-
-                    {service.badge && (
-                      <span className="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
-                        {service.badge}
-                      </span>
-                    )}
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-700 transition-colors font-heading">
-                      {service.name}
-                    </h3>
-                    {service.nameTamil && (
-                      <p className="text-xs text-emerald-700 font-semibold mt-0.5">{service.nameTamil}</p>
-                    )}
-                  </div>
-
-                  <p className="text-slate-600 text-xs leading-relaxed line-clamp-3">
-                    {service.description}
-                  </p>
-
-                  {service.features && service.features.length > 0 && (
-                    <ul className="space-y-1.5 pt-2 border-t border-slate-100 text-xs text-slate-700">
-                      {service.features.map((feat, idx) => (
-                        <li key={idx} className="flex items-center gap-1.5">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                          <span>{feat}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-
-                <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between gap-2">
-                  <button
-                    onClick={() => openBookingModal(service.name)}
-                    className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-3 rounded-xl text-xs transition-colors text-center"
-                  >
-                    Inquire Now
-                  </button>
-
-                  <a
-                    href={getWhatsappUrl(`Hello, I would like to inquire about ${service.name}`)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-teal-50 hover:bg-teal-100 text-teal-800 p-2 rounded-xl border border-teal-200"
-                    title="Quick WhatsApp Inquiry"
-                  >
-                    <MessageCircle className="w-4 h-4 text-teal-600" />
-                  </a>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="col-span-full text-center py-12 bg-white rounded-2xl border border-slate-200 p-8 space-y-3">
-              <Search className="w-10 h-10 text-slate-300 mx-auto" />
-              <h4 className="text-base font-bold text-slate-800">No Services Found</h4>
-              <p className="text-xs text-slate-500">
-                Try clearing your search query or choosing another service category filter.
-              </p>
-              <button
-                onClick={() => {
-                  setSearchTerm('');
-                  setSelectedCategory('All');
-                }}
-                className="text-xs text-emerald-700 font-bold underline"
-              >
-                Reset Filters
-              </button>
-            </div>
-          )}
-        </div>
-
-        <div className="text-center pt-4">
-          <Link
-            to="/services"
-            className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-6 py-3 rounded-xl text-xs font-bold shadow-md transition-all"
-          >
-            View Full Categorized Service Catalog
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </section>
 
       {/* ================= WHY CHOOSE US SECTION ================= */}
       <section className="bg-gradient-to-b from-slate-900 to-slate-950 text-white py-16">
@@ -693,7 +563,7 @@ export const Home: React.FC = () => {
       {/* ================= CONTACT & LOCATION SECTION ================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-10 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          
+
           <div className="lg:col-span-7 space-y-5">
             <div className="inline-flex items-center gap-2 text-emerald-400 bg-emerald-950 border border-emerald-800 px-3.5 py-1 rounded-full text-xs font-bold uppercase">
               <MapPin className="w-4 h-4" /> Business Location
@@ -728,9 +598,7 @@ export const Home: React.FC = () => {
                 <span>
                   <strong>WhatsApp:</strong>{' '}
                   <a
-                    href={getWhatsappUrl()}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="#book-appointment"
                     className="text-emerald-300 font-bold hover:underline"
                   >
                     {BUSINESS_INFO.whatsappNumber}
@@ -747,7 +615,7 @@ export const Home: React.FC = () => {
                 className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-5 py-3 rounded-xl text-xs flex items-center gap-2 shadow-lg transition-all"
               >
                 <ExternalLink className="w-4 h-4" />
-                Open Google Maps Directions
+                Get Directions
               </a>
 
               <Link
@@ -777,12 +645,6 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Booking Enquiry Modal */}
-      <EnquiryModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        prefilledService={modalService}
-      />
     </div>
   );
 };

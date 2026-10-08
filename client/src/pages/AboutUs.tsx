@@ -5,8 +5,14 @@ import { BUSINESS_INFO, getWhatsappUrl } from '../utils/constants';
 import { ClinicalDisclaimerNotice } from '../components/ClinicalDisclaimerNotice';
 
 import { BrandLogo } from '../components/BrandLogo';
+import { useSEO } from '../utils/useSEO';
 
 export const AboutUs: React.FC = () => {
+  useSEO({
+    title: 'About Us | Sri Kannathal Home Care & Nursing Service',
+    description: 'Learn about Sri Kannathal Home Care & Nursing Service. We deliver dignified, professional, and reliable home nursing care and patient attendants in Alanganallur and Madurai.'
+  });
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
       {/* Header Banner */}
@@ -65,7 +71,7 @@ export const AboutUs: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-2">
               <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-100 p-1">
-                <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
+                <img src="/logo.png" alt="Sri Kannathal Home Care" className="w-full h-full object-contain" />
               </div>
               <h3 className="font-bold text-slate-900 text-base font-heading">Our Mission</h3>
               <p className="text-xs text-slate-600 leading-relaxed">

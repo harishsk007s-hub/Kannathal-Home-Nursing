@@ -3,8 +3,13 @@ import { AlertTriangle } from 'lucide-react';
 import { BUSINESS_INFO, CLINICAL_DISCLAIMER_NOTICE } from '../utils/constants';
 
 import { BrandLogo } from '../components/BrandLogo';
+import { useSEO } from '../utils/useSEO';
 
 export const MedicalDisclaimer: React.FC = () => {
+  useSEO({
+    title: 'Medical Disclaimer | Sri Kannathal Home Care & Nursing Service',
+    description: 'Medical and clinical disclaimer for Sri Kannathal Home Care & Nursing Service.'
+  });
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       <div className="border-b border-slate-200 pb-6 space-y-3">

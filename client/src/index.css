@@ -1,17 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
-  font-family: 'Plus Jakarta Sans', 'Noto Sans Tamil', system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', 'Noto Sans Tamil', system-ui, -apple-system, sans-serif;
   color-scheme: light;
 }
 
 h1, h2, h3, h4, .font-heading {
-  font-family: 'Outfit', 'Noto Sans Tamil', sans-serif;
+  font-family: 'Poppins', 'Noto Sans Tamil', sans-serif;
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
