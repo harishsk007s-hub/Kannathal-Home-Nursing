@@ -1,6 +1,6 @@
 export const BUSINESS_INFO = {
   nameTamil: 'ஸ்ரீ கண்ணாத்தாள் ஹோம் கேர் & நர்சிங் சர்வீஸ்',
-  nameEnglish: 'Sri Kannathal Home Care & Nursing Service',
+  nameEnglish: 'Kannathal Home Care & Nursing',
   tagline: 'Compassionate, Professional & Reliable Healthcare at Your Doorstep',
   type: 'Home Healthcare Service Provider',
   phone1: '+91 93600 86005',
