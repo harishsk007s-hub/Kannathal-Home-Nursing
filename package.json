@@ -4,10 +4,12 @@
   "private": true,
   "description": "Frontend React + Vite + TypeScript + Tailwind CSS application for Sri Kannathal Home Care & Nursing Service",
   "scripts": {
-    "dev": "npm run dev --prefix client",
-    "build": "npm run build --prefix client",
+    "dev": "npx concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "dev:client": "npm run dev --prefix client",
+    "dev:server": "npm run dev --prefix server",
+    "build": "npm run build --prefix client && npm run build --prefix server",
     "preview": "npm run preview --prefix client",
-    "postinstall": "cd client && npm install"
+    "postinstall": "cd client && npm install && cd ../server && npm install"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"

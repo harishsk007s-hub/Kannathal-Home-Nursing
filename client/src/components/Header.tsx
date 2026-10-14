@@ -29,8 +29,8 @@ export const Header: React.FC = () => {
   return (
     <header className="relative z-50 bg-white/95 shadow-sm border-b border-emerald-100">
       {/* Top Bar for Phone Numbers & Location */}
-      <div className="bg-slate-900 text-white text-xs py-2 px-4">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+      <div className="bg-slate-900 text-white text-xs py-2">
+        <div className="w-full px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-2">
           <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-start">
             <span className="flex items-center gap-1 text-emerald-400 font-medium">
               <MapPin className="w-3.5 h-3.5" />
@@ -62,7 +62,7 @@ export const Header: React.FC = () => {
       </div>
 
       {/* Main Header Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between">
         {/* Brand Logo & Name */}
         <BrandLogo size="md" />
 

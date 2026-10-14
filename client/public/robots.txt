@@ -4,4 +4,4 @@ Disallow: /admin
 Disallow: /admin/login
 Disallow: /admin/dashboard
 
-Sitemap: https://YOUR-DOMAIN.com/sitemap.xml
+Sitemap: https://kannathalhomenursing.com/sitemap.xml
